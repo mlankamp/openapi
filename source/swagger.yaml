@@ -1,0 +1,29 @@
+openapi: 3.0.1
+info:
+  title: Testing
+  version: v1
+paths:
+  '/demo/{id}':
+    post:
+      tags:
+        - Testing
+      operationId: DeleteMultiple
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+      responses:
+        '204':
+          description: No Content
+
