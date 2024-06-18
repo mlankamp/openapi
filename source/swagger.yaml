@@ -3,11 +3,11 @@ info:
   title: Testing
   version: v1
 paths:
-  '/demo/{id}':
+  '/specific/{id}':
     post:
       tags:
         - Testing
-      operationId: DeleteMultiple
+      operationId: SpecficError
       parameters:
         - name: id
           in: path
@@ -15,15 +15,56 @@ paths:
           schema:
             type: string
             format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
       responses:
         '204':
           description: No Content
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/default/{id}':
+    post:
+      tags:
+        - Testing
+      operationId: DefaultError
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No Content
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: { }
